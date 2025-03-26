@@ -10,6 +10,8 @@ export const useAnimeStore = defineStore('anime', {
     seasonalAnime: [],
     searchQuery: '',
     currentAnime: null,
+    episodes: [],
+    relatedAnime: [],
   }),
 
   actions: {
@@ -57,6 +59,24 @@ export const useAnimeStore = defineStore('anime', {
         this.currentAnime = null
       } finally {
         this.loading = false
+      }
+    },
+
+    async fetchAnimeEpisodes(id) {
+      try {
+        this.episodes = await jikanApi.getAnimeEpisodes(id)
+      } catch (error) {
+        this.error = error.message
+        this.episodes = []
+      }
+    },
+
+    async fetchAnimeRelations(id) {
+      try {
+        this.relatedAnime = await jikanApi.getAnimeRelations(id)
+      } catch (error) {
+        this.error = error.message
+        this.relatedAnime = []
       }
     },
   },
